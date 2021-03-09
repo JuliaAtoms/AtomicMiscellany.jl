@@ -1,0 +1,6 @@
+[deps]
+AtomicMiscellany = "bc03fc7c-bde9-44d6-a7d2-c740425f0bb3"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+
+[compat]
+Documenter = "0.26"
