@@ -51,6 +51,10 @@ rms(::Type{JohnsonSoff1985}, ::Real)
 ## Utilities
 
 ```@docs
+potential
+density
+rms
+from_rms
 AtomicMiscellany.NuclearModels
 ```
 

@@ -7,27 +7,54 @@ the nuclear model is assumed to be normalized to unity (i.e. corresponding to ``
 Each concrete nuclear model of type `T <: AbstractNuclearModel` should implement the
 following method
 
-* `potential(::T, r::Real) -> Float64`: return the value of the potential at the radius `r`.
+* [`potential(::T, r::Real) -> Float64`](@ref potential):
+  return the value of the potential at the radius `r`.
 
 Additional, each nuclear model may also implement
 
-* `density(::T, r::Real) -> Float64`: return the value of the (normalized) charge density at
-  the radius `r`.
+* [`density(::T, r::Real) -> Float64`](@ref density):
+  return the value of the (normalized) charge density at the radius `r`.
 
-* `rms(::T)`: return the root-mean-square radius ``\\sqrt{\\langle r^2 \\rangle}`` of the
-  underlying charge distribution.
+* [`rms(::T)`](@ref rms):
+  return the root-mean-square radius ``\\sqrt{\\langle r^2 \\rangle}`` of the underlying
+  charge distribution.
 
-* `from_rms(::Type{T}, rms)`: construct an instance of the nuclear model with the specified
-  root-mean-square radius.
+* [`from_rms(::Type{T}, rms)`](@ref from_rms):
+  construct an instance of the nuclear model with the specified root-mean-square radius.
 
 !!! note "Units"
 
     All quantities are assumed to be in atomic units.
 """
 abstract type AbstractNuclearModel end
+
+"""
+    potential(::T, r::Real) -> Float64
+
+Return the value of the (normalized) charge density at the radius `r`.
+"""
 function potential end
+
+"""
+    density(::T, r::Real) -> Float64
+
+Return the value of the (normalized) charge density at the radius `r`.
+"""
 function density end
+
+"""
+    rms(::T)
+
+Return the root-mean-square radius ``\\sqrt{\\langle r^2 \\rangle}`` of the underlying
+charge distribution.
+"""
 function rms end
+
+"""
+    from_rms(::Type{T}, rms)
+
+Construct an instance of the nuclear model with the specified root-mean-square radius.
+"""
 function from_rms end
 
 """
