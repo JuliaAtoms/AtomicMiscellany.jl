@@ -19,6 +19,9 @@ makedocs(;
     pages=[
         "Home" => "index.md",
         "nuclearmodels.md",
+        "Implementation notes" => [
+            "implementation/nuclearmodels.md",
+        ]
     ],
 )
 
