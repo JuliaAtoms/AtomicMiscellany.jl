@@ -1,7 +1,9 @@
 using AtomicMiscellany
 using Documenter
 
-DocMeta.setdocmeta!(AtomicMiscellany, :DocTestSetup, :(using AtomicMiscellany); recursive=true)
+DocMeta.setdocmeta!(AtomicMiscellany, :DocTestSetup, quote
+    using AtomicMiscellany, AtomicMiscellany.NuclearModels
+end; recursive=true)
 
 makedocs(;
     modules=[AtomicMiscellany],
@@ -12,9 +14,11 @@ makedocs(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://JuliaAtoms.github.io/AtomicMiscellany.jl",
         assets=String[],
+        collapselevel = 1,
     ),
     pages=[
         "Home" => "index.md",
+        "nuclearmodels.md",
     ],
 )
 

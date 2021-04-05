@@ -4,9 +4,16 @@ CurrentModule = AtomicMiscellany
 
 # AtomicMiscellany
 
-```@index
+```@docs
+AtomicMiscellany
 ```
 
-```@autodocs
-Modules = [AtomicMiscellany]
+## Table of contents
+
+```@contents
+```
+
+## Index
+
+```@index
 ```

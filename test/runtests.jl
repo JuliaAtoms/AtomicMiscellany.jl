@@ -2,5 +2,5 @@ using AtomicMiscellany
 using Test
 
 @testset "AtomicMiscellany.jl" begin
-    # Write your tests here.
+    include("nuclearmodels.jl")
 end
