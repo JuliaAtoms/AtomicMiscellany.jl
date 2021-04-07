@@ -27,23 +27,24 @@ Additional, each nuclear model may also implement
     All quantities are assumed to be in atomic units.
 """
 abstract type AbstractNuclearModel end
+Base.Broadcast.broadcastable(x::AbstractNuclearModel) = Ref(x)
 
 """
-    potential(::T, r::Real) -> Float64
+    potential(::AbstractNuclearModel, r::Real) -> Float64
 
 Return the value of the (normalized) charge density at the radius `r`.
 """
 function potential end
 
 """
-    density(::T, r::Real) -> Float64
+    density(::AbstractNuclearModel, r::Real) -> Float64
 
 Return the value of the (normalized) charge density at the radius `r`.
 """
 function density end
 
 """
-    rms(::T)
+    rms(::AbstractNuclearModel)
 
 Return the root-mean-square radius ``\\sqrt{\\langle r^2 \\rangle}`` of the underlying
 charge distribution.
@@ -51,7 +52,7 @@ charge distribution.
 function rms end
 
 """
-    from_rms(::Type{T}, rms)
+    from_rms(::Type{<:AbstractNuclearModel}, rms)
 
 Construct an instance of the nuclear model with the specified root-mean-square radius.
 """

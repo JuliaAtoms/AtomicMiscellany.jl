@@ -7,6 +7,10 @@ maxnonzero(::AbstractNuclearModel) = Inf
 maxnonzero(m::UniformSphericalNucleus) = m.R
 
 @testset "Nuclear models" begin
+    # Test that any AbstractNuclearModel broadcasts like a scalar
+    @test length(potential.(PointNucleus(), [1,2,3])) == 3
+    @test length(density.(GaussianNucleus(1), [1,2,3,4])) == 4
+
     # Check that if we construct the nuclear models using the from_rms method, that the
     # resulting objects have the correct RMS value.
     function check_rms_constructor(T::Type{<:AbstractNuclearModel})
