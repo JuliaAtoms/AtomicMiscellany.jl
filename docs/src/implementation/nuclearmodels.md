@@ -2,7 +2,7 @@
 CurrentModule = AtomicMiscellany
 ```
 
-# Nuclear models
+# [Notes: nuclear models](@id notes-nuclei)
 
 Notes on the internal implementation details of the nuclear models. Anything discussed here
 is **not** considered to be part of the public API.

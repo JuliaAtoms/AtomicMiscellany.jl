@@ -13,7 +13,13 @@ The package also provides submodules to bring related subsets bindings into name
 * [`AtomicMiscellany.NuclearModels`](@ref)
 """
 module AtomicMiscellany
+using GSL: sf_hyperg_U, sf_bessel_jl
 using SpecialFunctions: erf
+using PhysicalConstants: CODATA2018, @constant
+using Unitful: kg
+using Roots: find_zero
+
+include("constants.jl")
 
 include("nuclearmodels.jl")
 include("johnsonsoff1985.jl")
@@ -36,5 +42,7 @@ module NuclearModels
         PointNucleus, UniformShellNucleus, UniformSphericalNucleus, GaussianNucleus,
         JohnsonSoff1985
 end
+
+include("hydrogenic_energies.jl")
 
 end

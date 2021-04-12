@@ -1,9 +1,16 @@
 using AtomicMiscellany
-using Documenter
+using Documenter, Literate
+using Plots, Formatting
 
 DocMeta.setdocmeta!(AtomicMiscellany, :DocTestSetup, quote
     using AtomicMiscellany, AtomicMiscellany.NuclearModels
 end; recursive=true)
+
+Literate.markdown(
+    joinpath(@__DIR__, "src", "implementation", "hydrogenic.jl"),
+    joinpath(@__DIR__, "src", "implementation"),
+    documenter = true,
+)
 
 makedocs(;
     modules=[AtomicMiscellany],
@@ -19,8 +26,10 @@ makedocs(;
     pages=[
         "Home" => "index.md",
         "nuclearmodels.md",
+        "hydrogenic.md",
         "Implementation notes" => [
-            "implementation/nuclearmodels.md",
+            "Nuclear models" => "implementation/nuclearmodels.md",
+            "Hydrogenic energies" => "implementation/hydrogenic.md",
         ]
     ],
 )
