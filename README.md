@@ -13,10 +13,9 @@ suit unit tests.
 Package includes:
 
 * **Nuclear models.** Methods for evaluating the densities and potentials for various
-  spherically symmetric nuclear models, such as the point nuclear, uniform sphere and shell,
-  Gaussian etc.
-* **Hydrogenic energeis.** Methods for calculating the energies of non-relativistic and
+  spherically symmetric nuclear models, such as the point nucleus, uniform sphere and uniform shell models, Gaussian nucleus etc.
+* **Hydrogenic energies.** Methods for calculating the energies of non-relativistic and
   relativistic (Dirac) hydrogen-like bound states, for both point nuclei and some finite
-  nuclear models (currently, only uniform shell nucleus is supported).
+  nuclear models (currently, only the uniform shell nucleus is supported).
 
 For more details, see [the documentation](https://juliaatoms.org/AtomicMiscellany.jl/dev).
