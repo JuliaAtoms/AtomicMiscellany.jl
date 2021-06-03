@@ -108,6 +108,8 @@ function hydrogenic_energy(p::DiracParticle, ::PointNucleus, Z::Number; n::Integ
         Z < 0 && throw(DomainError(Z, "0 ≤ Z ≤ α⁻¹ for real Z"))
         Z > 1/α && throw(DomainError(Z, "0 ≤ Z ≤ α⁻¹ for real Z, pass as complex(Z) to evaluate at Z > α⁻¹"))
     end
+    # Note: using this expression is not as numerically precise as it could probably be, in
+    # terms of floating point precision. It leads to an error of about 1e-12.
     (1 / sqrt(1 + (Z*α / (n - abs(κ) + sqrt(κ^2 - (Z*α)^2)))^2) - 1) * p.mass * α^-2
 end
 
@@ -153,7 +155,24 @@ end
 
 function hydrogenic_energy(p::DiracParticle, nm::UniformShellNucleus, Z::Real; n::Integer, κ::Integer, mj = 0, verbose=false)
     n >= 1 || throw(DomainError(n, "n must be a positive integer"))
-    emin, emax = hydrogenic_energy(p, Z; n = n, κ = κ), hydrogenic_energy(p, Z; n = n + 1, κ = κ)
+    # We'll do root finding in a bracketing box, so we first need to decide the bracketing
+    # interval. As we know that the energies always slightly shift up, we choose the
+    # interval to be between the n and n+1 point energies. In most cases, this will
+    # guarantee that we will have exactly one zero within the interval. Where this will fail
+    # is when the FNC shift is so large that energy is greater than the next PNC energy.
+    emin = hydrogenic_energy(p, Z; κ = κ, n = n)
+    emax = hydrogenic_energy(p, Z; κ = κ, n = n + 1)
+    # We shift the bracketing interval a bit because of the numerical errors in
+    # hydrogenic_energy. With 64-bit floats, it's accuracy is only about 1e-12, so we are
+    # conservative here and shift everything by 1e-10. This is still many orders of magnitude
+    # smaller than the energy difference between any two consective n values (for low enough
+    # n values), so this is pretty safe thing to do.
+    #
+    # However, the result is that we are guaranteed to have a sane bracketing interval,
+    # whereas without this shift we sometimes place the start or end of the interval _after_
+    # the corresponding zero, as opposed to having it before it.
+    emin -= 1e-10
+    emax -= 1e-10
     # In the expressions, we need to evaluate α_nκ, which require E ≥ -Z/R for f to not be
     # complex. So we constrain the bounding box when Z becomes large enough.
     emin = max(emin, -Z/nm.R)
@@ -168,14 +187,26 @@ function f_andrae_dirac_topslice(; Z, R, κ, E)
     c = α^-1 # since we are in atomic units
     ℓ = κ2ℓ(κ)
     # Following are from equation (282)
-    Wnκ = E + c^2
-    C⁺, C⁻ = sqrt(c^2 + Wnκ), sqrt(c^2 - Wnκ)
-    βnκ = C⁺ * C⁻ / c
+    #
+    # Wnκ = E + c^2
+    # C⁺, C⁻ = sqrt(c^2 + Wnκ), sqrt(c^2 - Wnκ)
+    # βnκ = C⁺ * C⁻ / c
+    #
+    # However, as the expressions in the paper are subject to numerical roundoff errors that
+    # limit the resolution of E to about 1e-12 (for 64-bit floats), we slightly rearrange
+    # the equations for βnκ and also νnκ below.
+    Ec⁻² = E/c^2
+    βnκ = sqrt(-E * (2 + Ec⁻²))
     x_out = 2*βnκ*R # x at r = R for outer part
     A = Z/βnκ + κ
     γ = sqrt(κ^2 - (Z/c)^2)
     b = 2γ +  1
-    νnκ = 0.5 + Z*Wnκ/(βnκ * c^2)
+    # We also modify νnκ
+    #
+    # νnκ = 0.5 + Z*Wnκ/(βnκ * c^2)
+    #
+    # to reduce roundoff errors.
+    νnκ = 0.5 + (Z/βnκ) * (Ec⁻² + 1)
     a = b/2 - νnκ
     # From 283
     U00 = sf_hyperg_U(a, b, x_out)

@@ -180,7 +180,8 @@ plot(
 # L^{\mathrm{in}}_{n\kappa}(R) - \frac{\gamma}{R} = - T^{\mathrm{out}}_{n\kappa}(R)
 # ```
 #
-# ``L^{\mathrm{in}}_{n\kappa}(r)`` is the logarithmic derivative of the ``P`` component of the inner part of the wavefunction (i.e. for ``r <= R``). According to equations (273) and (274), it can be written as
+# ``L^{\mathrm{in}}_{n\kappa}(r)`` is the logarithmic derivative of the ``P`` component of the inner part of the wavefunction (i.e. for ``r \leq R``).
+# According to equations (273) and (274), it can be written as
 #
 # ```math
 # L^{\mathrm{in}}_{n\kappa}(r) = \frac{\ell + 1}{r} - T^{\mathrm{in}}_{n\kappa}(r)

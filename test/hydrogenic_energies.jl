@@ -41,9 +41,16 @@ using Test
         @testset for nr = 1:10
             @test hydrogenic_energy(DiracElectron, UniformShellNucleus(R), Z; n = nr, κ = -1) > hydrogenic_energy(DiracElectron, Z; n = nr, κ = -1)
         end
-        @testset for nr = 2:4
-            # nr = 1 and nr > 4 fail, due to floating point errors
-            @test hydrogenic_energy(DiracElectron, UniformShellNucleus(R), Z; n = nr + 1, κ = 1) > hydrogenic_energy(DiracElectron, Z; n = nr + 1, κ = 1)
+        @testset for nr = 1:10
+            if Z == 1
+                # If Z = 1, we check that (E_FNC - E_PNC) > -5e-12, instead of that it's strictly greater
+                # because the PNC value actually has an error of about 1e-12. So, at high n and κ, where
+                # the FNC correction is really-really tiny, we sometimes get PNC values that are lower
+                # than the FNC values.
+                @test hydrogenic_energy(DiracElectron, UniformShellNucleus(R), Z; n = nr + 1, κ = 1) - hydrogenic_energy(DiracElectron, Z; n = nr + 1, κ = 1) > -5e-12
+            else
+                @test hydrogenic_energy(DiracElectron, UniformShellNucleus(R), Z; n = nr + 1, κ = 1) > hydrogenic_energy(DiracElectron, Z; n = nr + 1, κ = 1)
+            end
         end
     end
 end
